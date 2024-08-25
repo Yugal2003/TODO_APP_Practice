@@ -1,0 +1,42 @@
+<!-- localstorage code -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1 id="h1tag">todos</h1>
+        <div id="div_3" style="margin-top: -3.5rem;">
+            <div style="padding-block: 0.5rem; display: flex; gap: 1rem; border-bottom: 2px solid rgb(235, 235, 235); box-shadow: 1px 0.3px 0px 1px rgb(242, 242, 242);">
+                <img width="40px" src="./img/down-chevron_4.png" alt=""/>
+                <input onkeydown="handleKeydown(event)" autocomplete="off" type="text" id="todo-input" placeholder="What needs to be done?">
+            </div>
+            <div>
+                <ul id="todo-list"></ul>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between;margin-inline: 0.7rem;margin-top: -0.5rem;">
+                <div id="total-count"></div>
+                <div>
+                    <button class="btnss" id="show-all">All</button>
+                    <button class="btnss" id="show-active">Active</button>
+                    <button class="btnss" id="show-completed">Completed</button>
+                </div>
+                <div>
+                    <button class="btnss" id="clear-completed">Clear Completed</button>
+                </div>
+            </div>
+        </div>
+        <div class="two_line_div">
+            <div class="line"></div>
+            <div class="line_2"></div>
+        </div>
+    </div>
+    <script src="./script.js"></script>
+</body>
+</html>

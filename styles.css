@@ -1,0 +1,134 @@
+body{
+    background-color: rgb(245, 245, 245);
+}
+.edit-input{
+    padding: 0.5rem;
+    font-size: 16px;
+    width: 160px;
+    margin-left: 2rem;
+}
+.parent_div{
+    padding-bottom: 0.5rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border-bottom: 1.7px solid rgb(235, 235, 235);
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+}
+#h1tag{
+    font-size: 100px;
+    font-weight: 100;
+    color: rgb(242, 218, 221);
+}
+#todo-input{
+    font-style: italic;
+    font-size: 20px;
+    border: none;
+    outline: none;
+    width: 70%;
+}
+input::placeholder {
+    color: rgb(240, 239, 239);
+    font-size: 24px;
+}
+.img1{
+    cursor: pointer;
+    border-radius: 50%;
+    width: 32px;
+}
+#div_3{
+    min-width: 545px;
+    border: none;
+    outline: none;
+    background-color: white;
+    box-shadow: 1px 1px 4px 1px rgba(230,230,230,1);
+}
+body{
+    font-family: Arial, sans-serif;
+}
+#todo-list {
+    list-style-type: none;
+    padding: 0;
+}
+.todo-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.completed{
+    font-size:24px;
+    color: rgb(209, 209, 209);
+    text-decoration: line-through;
+}
+.uncompleted{
+    color: rgb(77, 77, 77);
+    font-size:24px;
+}
+.circle{
+    width: 28px;
+    height: 28px;
+    border: 2px solid #efefef;
+    border-radius: 50%;
+    margin-right: 20px;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.image-container {
+    display: none;
+    margin-right: 20px;
+    margin-left: 10px;
+}
+button{
+    margin-left: 10px;
+}
+#total-count{
+    margin-block: 10px;
+    color: grey;
+    font-weight:600;
+    font-size: 14px;
+}
+.btnss{
+    border: none;
+    outline: none;
+    background-color: white;
+    color: grey;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+}
+.btnss.active {
+    border: 1px solid orange; 
+    border-radius: 5px;
+    padding: 0.4rem 0.5rem;
+}
+
+.two_line_div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 545px;
+}
+.line{
+    width: 98.5%;
+    height: 5px;
+    border-radius: 1px;
+    background-color: rgb(253, 253, 253);
+    border: 1.5px solid rgb(216, 216, 216);
+}
+.line_2{
+    width: 97.5%;
+    height: 3.5px;
+    border-radius: 1px;
+    background-color: rgb(253, 253, 253);
+    border: 2px solid rgb(219, 219, 219);
+}

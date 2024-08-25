@@ -1,0 +1,427 @@
+<!-- localstorage code -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List App</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #todo-list { list-style-type: none; padding: 0; }
+        .todo-item { display: flex; align-items: center; margin-bottom: 10px; }
+        .completed { text-decoration: line-through; }
+        .circle {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #000;
+            border-radius: 50%;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer; /* Add cursor pointer for better UX */
+        }
+        .image-container {
+            display: none;
+            margin-right: 10px;
+        }
+        button { margin-left: 10px; }
+        #total-count { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Todo List</h1>
+    <input autocomplete="off" type="text" id="todo-input" placeholder="Add a new todo">
+    <button id="add-todo">Add Todo</button>
+    <button id="show-all">All</button>
+    <button id="show-active">Active</button>
+    <button id="show-completed">Completed</button>
+    <button id="clear-completed">Clear Completed</button>
+    <ul id="todo-list"></ul>
+    <div id="total-count">Total Todos: 0</div>
+
+    <script>
+        let todos = JSON.parse(localStorage.getItem('todos')) || [];
+
+        function saveTodos() {
+            localStorage.setItem('todos', JSON.stringify(todos));
+        }
+
+        function renderTodos(filter = 'all') {
+            const todoList = document.getElementById('todo-list');
+            todoList.innerHTML = '';
+            const filteredTodos = todos.filter(todo => {
+                if (filter === 'active') return !todo.completed;
+                if (filter === 'completed') return todo.completed;
+                return true; // all
+            });
+
+            filteredTodos.forEach((todo, index) => {
+                const li = document.createElement('li');
+                li.className = 'todo-item';
+                li.innerHTML = `
+                    <div class="circle" onclick="toggleComplete(${index})"></div>
+                    <div class="image-container" id="image-${index}" onclick="toggleComplete(${index})">
+                        <img class="circle" src="./img/true_2.png" alt="Completed" />
+                    </div>
+                    <span class="${todo.completed ? 'completed' : ''}" ondblclick="editTodo(${index})">${todo.text}</span>
+                    <button onclick="deleteTodo(${index})">Delete</button>
+                `;
+                todoList.appendChild(li);
+
+                // Show/hide image based on completion status
+                const imageContainer = document.getElementById(`image-${index}`);
+                if (todo.completed) {
+                    imageContainer.style.display = 'block';
+                    li.querySelector('.circle').style.display = 'none'; // Hide the circle
+                } else {
+                    imageContainer.style.display = 'none';
+                    li.querySelector('.circle').style.display = 'flex'; // Show the circle
+                }
+            });
+
+            updateTotalCount();
+        }
+
+        function toggleComplete(index) {
+            todos[index].completed = !todos[index].completed; // Toggle the completed state
+            saveTodos(); // Save the updated todos to localStorage
+            renderTodos(); // Re-render the list to reflect changes
+        }
+
+        function addTodo() {
+            const todoInput = document.getElementById('todo-input');
+            const todoText = todoInput.value.trim();
+            if (todoText) {
+                todos.push({ text: todoText, completed: false });
+                todoInput.value = '';
+                saveTodos(); // Save the new todo to localStorage
+                renderTodos(); // Re-render the list to show the new todo
+            } else {
+                alert("Please fill the input field");
+            }
+        }
+
+        function deleteTodo(index) {
+            todos.splice(index, 1);
+            saveTodos(); // Save the updated todos to localStorage
+            renderTodos();
+        }
+
+        function editTodo(index) {
+            const newText = prompt("Edit todo:", todos[index].text);
+            if (newText) {
+                todos[index].text = newText;
+                saveTodos(); // Save the updated todos to localStorage
+                renderTodos();
+            }
+        }
+
+        function updateTotalCount() {
+            const totalCount = document.getElementById('total-count');
+            totalCount.textContent = `Total Todos: ${todos.length}`;
+        }
+
+        document.getElementById('add-todo').addEventListener('click', addTodo);
+
+        document.getElementById('show-all').addEventListener('click', () => renderTodos('all'));
+        document.getElementById('show-active').addEventListener('click', () => renderTodos('active'));
+        document.getElementById('show-completed').addEventListener('click', () => renderTodos('completed'));
+        document.getElementById('clear-completed').addEventListener('click', () => {
+            todos = todos.filter(todo => !todo.completed);
+            saveTodos(); // Save the updated todos to localStorage
+            renderTodos();
+        });
+
+        renderTodos(); // Render the initial todos from localStorage
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- original code -->
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List App</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #todo-list { list-style-type: none; padding: 0; }
+        .todo-item { display: flex; align-items: center; margin-bottom: 10px; }
+        .completed { text-decoration: line-through; }
+        .circle {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #000;
+            border-radius: 50%;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer; /* Add cursor pointer for better UX */
+        }
+        .image-container {
+            display: none;
+            margin-right: 10px;
+        }
+        button { margin-left: 10px; }
+        #total-count { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Todo List</h1>
+    <input autocomplete="off" type="text" id="todo-input" placeholder="Add a new todo">
+    <button id="add-todo">Add Todo</button>
+    <button id="show-all">All</button>
+    <button id="show-active">Active</button>
+    <button id="show-completed">Completed</button>
+    <button id="clear-completed">Clear Completed</button>
+    <ul id="todo-list"></ul>
+    <div id="total-count">Total Todos: 0</div>
+
+    <script>
+        let todos = [];
+
+        document.getElementById('add-todo').addEventListener('click', function() {
+            const todoInput = document.getElementById('todo-input');
+            const todoText = todoInput.value.trim();
+            if (todoText) {
+                todos.push({ text: todoText, completed: false });
+                todoInput.value = '';
+                renderTodos(); // Call renderTodos here
+            } else {
+                alert("Please fill the input field");
+            }
+        });
+
+        function renderTodos(filter = 'all') {
+            const todoList = document.getElementById('todo-list');
+            todoList.innerHTML = '';
+            const filteredTodos = todos.filter(todo => {
+                if (filter === 'active') return !todo.completed;
+                if (filter === 'completed') return todo.completed;
+                return true; // all
+            });
+
+            filteredTodos.forEach((todo, index) => {
+                const li = document.createElement('li');
+                li.className = 'todo-item';
+                li.innerHTML = `
+                    <div class="circle" onclick="toggleComplete(${index})"></div>
+                    <div class="image-container" id="image-${index}" onclick="toggleComplete(${index})">
+                        <img class="circle" src="./img/true_2.png" alt="Completed" />
+                    </div>
+                    <span class="${todo.completed ? 'completed' : ''}" ondblclick="editTodo(${index})">${todo.text}</span>
+                    <button onclick="deleteTodo(${index})">Delete</button>
+                `;
+                todoList.appendChild(li);
+
+                // Show/hide image based on completion status
+                const imageContainer = document.getElementById(`image-${index}`);
+                if (todo.completed) {
+                    imageContainer.style.display = 'block';
+                    li.querySelector('.circle').style.display = 'none'; // Hide the circle
+                } else {
+                    imageContainer.style.display = 'none';
+                    li.querySelector('.circle').style.display = 'flex'; // Show the circle
+                }
+            });
+
+            updateTotalCount();
+        }
+
+        function toggleComplete(index) {
+            todos[index].completed = !todos[index].completed; // Toggle the completed state
+            renderTodos(); // Re-render the list to reflect changes
+        }
+
+        function deleteTodo(index) {
+            todos.splice(index, 1);
+            renderTodos();
+        }
+
+        function editTodo(index) {
+            const newText = prompt("Edit todo:", todos[index].text);
+            if (newText) {
+                todos[index].text = newText;
+                renderTodos();
+            }
+        }
+
+        function updateTotalCount() {
+            const totalCount = document.getElementById('total-count');
+            totalCount.textContent = `Total Todos: ${todos.length}`;
+        }
+
+        document.getElementById('show-all').addEventListener('click', () => renderTodos('all'));
+        document.getElementById('show-active').addEventListener('click', () => renderTodos('active'));
+        document.getElementById('show-completed').addEventListener('click', () => renderTodos('completed'));
+        document.getElementById('clear-completed').addEventListener('click', () => {
+            todos = todos.filter(todo => !todo.completed);
+            renderTodos();
+        });
+    </script>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+<!-- //chat gpt -->
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List App</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #todo-list { list-style-type: none; padding: 0; }
+        .todo-item { display: flex; align-items: center; margin-bottom: 10px; }
+        .completed { text-decoration: line-through; }
+        .circle {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #000;
+            border-radius: 50%;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .image-container {
+            margin-right: 10px;
+            display: none;
+        }
+        button { margin-left: 10px; }
+        #total-count { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Todo List</h1>
+    <input autocomplete="off" type="text" id="todo-input" placeholder="Add a new todo">
+    <button id="add-todo">Add Todo</button>
+    <button id="show-all">All</button>
+    <button id="show-active">Active</button>
+    <button id="show-completed">Completed</button>
+    <button id="clear-completed">Clear Completed</button>
+    <ul id="todo-list"></ul>
+    <div id="total-count">Total Todos: 0</div>
+
+    <script>
+        let todos = [];
+
+        document.getElementById('add-todo').addEventListener('click', function() {
+            const todoInput = document.getElementById('todo-input');
+            const todoText = todoInput.value.trim();
+            if (todoText) {
+                todos.push({ text: todoText, completed: false });
+                todoInput.value = '';
+                renderTodos();
+            } else {
+                alert("Please fill the input field");
+            }
+        });
+
+        function renderTodos(filter = 'all') {
+            const todoList = document.getElementById('todo-list');
+            todoList.innerHTML = '';
+            const filteredTodos = todos.filter(todo => {
+                if (filter === 'active') return !todo.completed;
+                if (filter === 'completed') return todo.completed;
+                return true;
+            });
+
+            filteredTodos.forEach((todo, index) => {
+                const li = document.createElement('li');
+                li.className = 'todo-item';
+                li.innerHTML = `
+                    <div class="circle" onclick="toggleComplete(${index})"></div>
+                    <div class="image-container" id="image-${index}">
+                        <img src="./img/true.png" alt="Completed" />
+                    </div>
+                    <span class="${todo.completed ? 'completed' : ''}" ondblclick="editTodo(${index})">${todo.text}</span>
+                    <button onclick="deleteTodo(${index})">Delete</button>
+                `;
+                todoList.appendChild(li);
+
+                // Show/hide elements based on completion status
+                const imageContainer = document.getElementById(`image-${index}`);
+                const circle = li.querySelector('.circle');
+                if (todo.completed) {
+                    imageContainer.style.display = 'block';
+                    circle.style.display = 'none';
+                } else {
+                    imageContainer.style.display = 'none';
+                    circle.style.display = 'flex';
+                }
+            });
+
+            updateTotalCount();
+        }
+
+        function toggleComplete(index) {
+            todos[index].completed = !todos[index].completed;
+            renderTodos();
+        }
+
+        function deleteTodo(index) {
+            todos.splice(index, 1);
+            renderTodos();
+        }
+
+        function editTodo(index) {
+            const newText = prompt("Edit todo:", todos[index].text);
+            if (newText) {
+                todos[index].text = newText;
+                renderTodos();
+            }
+        }
+
+        function updateTotalCount() {
+            const totalCount = document.getElementById('total-count');
+            totalCount.textContent = `Total Todos: ${todos.length}`;
+        }
+
+        document.getElementById('show-all').addEventListener('click', () => renderTodos('all'));
+        document.getElementById('show-active').addEventListener('click', () => renderTodos('active'));
+        document.getElementById('show-completed').addEventListener('click', () => renderTodos('completed'));
+        document.getElementById('clear-completed').addEventListener('click', () => {
+            todos = todos.filter(todo => !todo.completed);
+            renderTodos();
+        });
+    </script>
+</body>
+</html> -->
